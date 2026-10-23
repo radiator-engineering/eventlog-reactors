@@ -1,6 +1,6 @@
 # eventlog-reactors
 
-Reactors for the [`eventlog`](https://github.com/radiator-engineering/eventlog) coordination log. They need the `eventlog` CLI. This repo holds the reactor code and docs, moved out of the `eventlog` repo.
+Reactors for the [`eventlog`](https://github.com/radiator-engineering/eventlog) coordination log. They need the `eventlog` CLI. Until eventlog 0.5 the reactors were part of `eventlog`; they now live here.
 
 `eventlog-reactors` is an optional add-on for an [`eventlog`](https://github.com/radiator-engineering/eventlog/blob/main/README.md) coordination log. It runs reactors: long-running agents that wait for one type of log event, act on it, and record the outcome as an `ack` in the same log. The log works without it.
 
@@ -29,12 +29,14 @@ Skip reactors if you commit by hand. Also skip them if nothing can keep a proces
 
 ## Install
 
+`eventlog-reactors` is not on crates.io yet. Install it from this repo, and install the `eventlog` CLI too:
+
 ```sh
-cargo install eventlog-cli --locked        # `eventlog`, if you do not have it yet
-cargo install eventlog-reactors --locked   # `eventlog-reactors`
+cargo install eventlog-cli --locked   # `eventlog`, if you do not have it yet
+cargo install --git https://github.com/radiator-engineering/eventlog-reactors --locked   # `eventlog-reactors`
 ```
 
-From a checkout, run `cargo install --path . --locked`. `eventlog-reactors` needs the `eventlog` CLI on your PATH at run time. Install both at the same version.
+From a checkout, run `cargo install --path . --locked`. You need Rust 1.88 or later. `eventlog-reactors` needs the `eventlog` CLI on your PATH at run time. Install both at the same version.
 
 ## Set up
 
@@ -122,6 +124,15 @@ The log commands show reactor activity once a reactor has written to the log. `e
 - `ack seq_done=<seq> outcome=<outcome>`: the action ran, and this is its outcome. Resume reads these lines.
 - `violation paths=<list>`: the action committed files outside the authorized set. The commit stands; the line records it.
 - `observed paths=<list>`: unclaimed files turned dirty while the action ran. This is another agent's work in progress, with no blame.
+
+## Limits
+
+- A reactor is one long-running process. If nothing keeps it running, it stops, and events wait in the log until you start it again.
+- A reactor reads only the log you point it at, in one repository. It does not coordinate across repositories or machines.
+- The commit reactor commits only the files an event names in `paths=`. It cannot commit work that no `result` names.
+- The voter checks claims that agents recorded in the log. It does not stop an agent that edits files without a claim; `--git` reports that after the fact as `observed` or `violation`.
+- The action runs with your user's permissions. The reactor does not sandbox it.
+- The `eventlog` CLI and `eventlog-reactors` share a log format. Use matching versions.
 
 ## Migrate from eventlog 0.5
 
