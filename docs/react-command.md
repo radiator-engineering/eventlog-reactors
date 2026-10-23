@@ -116,5 +116,5 @@ cargo test
 - Rule voter — `authorize` and `check`, the first half of `RealSteps`.
 - Action runner — `run` and `snapshot`, the second half of `RealSteps`.
 - [Action](action.md) — the packaged commands a reactor runs after `--`.
-- [Reactors](../../reactors/README.md) — what reactors are and how to opt in.
-- [`eventlog` command list](../reference/eventlog-cli-surface.md)
+- [Reactors](../README.md) — what reactors are and how to opt in.
+- [`eventlog` command list](https://github.com/radiator-engineering/eventlog/blob/main/docs/reference/eventlog-cli-surface.md)

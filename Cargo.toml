@@ -5,8 +5,8 @@ description = "Optional reactors for an eventlog coordination log: commit a resu
 edition = "2024"
 rust-version = "1.88"
 license = "Apache-2.0"
-homepage = "https://github.com/radiator-engineering/eventlog"
-repository = "https://github.com/radiator-engineering/eventlog"
+homepage = "https://github.com/radiator-engineering/eventlog-reactors"
+repository = "https://github.com/radiator-engineering/eventlog-reactors"
 
 [[bin]]
 name = "eventlog-reactors"
@@ -17,7 +17,7 @@ name = "eventlog_reactors"
 path = "src/lib.rs"
 
 [dependencies]
-eventlog-cli = { path = "..", version = "0.5.1" }
+eventlog-cli = { git = "https://github.com/radiator-engineering/eventlog", rev = "656b0aa" }
 anyhow = "1"
 clap = { version = "4", features = ["derive"] }
 ctrlc = { version = "3.5.2", features = ["termination"] }

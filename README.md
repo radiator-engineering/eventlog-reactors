@@ -1,5 +1,7 @@
 # eventlog-reactors
 
+Reactors for the [`eventlog`](https://github.com/radiator-engineering/eventlog) coordination log. They need the `eventlog` CLI. This repo holds the reactor code and docs, moved out of the `eventlog` repo.
+
 `eventlog-reactors` is an optional add-on for an [`eventlog`](https://github.com/radiator-engineering/eventlog/blob/main/README.md) coordination log. It runs reactors: long-running agents that wait for one type of log event, act on it, and record the outcome as an `ack` in the same log. The log works without it.
 
 ## What a reactor does
@@ -13,7 +15,7 @@ For each event that matches its `--on` type and `--filter` conditions, the runti
 5. With `--git`, appends `violation` if the action committed files outside the authorized set, and `observed` if unclaimed files turned dirty while it ran.
 6. Appends `ack seq_done=<seq> outcome=<outcome>`.
 
-A reactor holds a lock, so a second instance with the same name refuses to start. After a restart it resumes from its own `ack` lines. On its first start it acks the current end of the log and does not act on older events. See [React command](https://github.com/radiator-engineering/eventlog/blob/main/docs/reactors/react-command.md).
+A reactor holds a lock, so a second instance with the same name refuses to start. After a restart it resumes from its own `ack` lines. On its first start it acks the current end of the log and does not act on older events. See [React command](https://github.com/radiator-engineering/eventlog-reactors/blob/main/docs/react-command.md).
 
 ## When you want reactors
 
@@ -32,7 +34,7 @@ cargo install eventlog-cli --locked        # `eventlog`, if you do not have it y
 cargo install eventlog-reactors --locked   # `eventlog-reactors`
 ```
 
-From a checkout, run `cargo install --path . --locked` and `cargo install --path reactors --locked`. Each release also carries archives and a Homebrew formula for both binaries. The two crates share one version; install the same version of each.
+From a checkout, run `cargo install --path . --locked`. `eventlog-reactors` needs the `eventlog` CLI on your PATH at run time. Install both at the same version.
 
 ## Set up
 
@@ -47,7 +49,7 @@ eventlog-reactors setup apply
 - `.context/eventlog-reactors.star`: a Drove helper that defines the commit and docs reactor panes.
 - `.context/*.reactor.lock/` in `.gitignore`.
 
-`setup` never overwrites a file that exists, never rewrites a `Drovefile`, never restarts a reactor, never removes a lock, and never advances an `ack`. After you edit the policy, run `eventlog-reactors setup upgrade`. It keeps your policy edits and regenerates the helper. It refuses a malformed policy, and it refuses to overwrite a helper you edited by hand. See [Reactor setup](https://github.com/radiator-engineering/eventlog/blob/main/docs/reactors/setup.md).
+`setup` never overwrites a file that exists, never rewrites a `Drovefile`, never restarts a reactor, never removes a lock, and never advances an `ack`. After you edit the policy, run `eventlog-reactors setup upgrade`. It keeps your policy edits and regenerates the helper. It refuses a malformed policy, and it refuses to overwrite a helper you edited by hand. See [Reactor setup](https://github.com/radiator-engineering/eventlog-reactors/blob/main/docs/setup.md).
 
 `[docs].command` is empty in the template. Set it to the command that updates your docs before you start the docs reactor; an empty command is a failed action.
 
@@ -103,7 +105,7 @@ To run your own action, put any command after `--`. It can write `outcome=<outco
 eventlog-reactors react test <seq> --as <name> --git -- <command>
 ```
 
-The action runs as normal; the runtime prints its `intent` and `ack` instead of appending them. See [Action](https://github.com/radiator-engineering/eventlog/blob/main/docs/reactors/action.md).
+The action runs as normal; the runtime prints its `intent` and `ack` instead of appending them. See [Action](https://github.com/radiator-engineering/eventlog-reactors/blob/main/docs/action.md).
 
 ## Check the reactors
 
@@ -111,7 +113,7 @@ The action runs as normal; the runtime prints its `intent` and `ack` instead of 
 eventlog-reactors doctor
 ```
 
-`doctor` prints one line for the reactor setup: `[ OK ]`; `[WARN]` when the policy is missing or the setup is out of date (the line names the command to run); or `[FAIL]` when `upgrade` would refuse, for example on a malformed policy or a hand-edited helper. It prints one line per `<log>.<name>.reactor.lock`: `[ OK ]` while its process is live, `[WARN]` when the lock is stale. It exits 1 only on `[FAIL]`. Never delete a lock directory; the runtime reclaims a stale one on start. See [Reactor lock liveness](https://github.com/radiator-engineering/eventlog/blob/main/docs/reactors/reactor-lock-liveness.md).
+`doctor` prints one line for the reactor setup: `[ OK ]`; `[WARN]` when the policy is missing or the setup is out of date (the line names the command to run); or `[FAIL]` when `upgrade` would refuse, for example on a malformed policy or a hand-edited helper. It prints one line per `<log>.<name>.reactor.lock`: `[ OK ]` while its process is live, `[WARN]` when the lock is stale. It exits 1 only on `[FAIL]`. Never delete a lock directory; the runtime reclaims a stale one on start. See [Reactor lock liveness](https://github.com/radiator-engineering/eventlog-reactors/blob/main/docs/reactor-lock-liveness.md).
 
 The log commands show reactor activity once a reactor has written to the log. `eventlog state` adds a `reactors:` section, and `eventlog why <seq>` adds a `verdict:` line. The reactor's lines mean:
 
@@ -134,10 +136,10 @@ Then restart each reactor so it runs `eventlog-reactors`. `eventlog doctor` no l
 
 ## Reference
 
-- [React command](https://github.com/radiator-engineering/eventlog/blob/main/docs/reactors/react-command.md): `eventlog-reactors react` and `react test`.
-- [Action](https://github.com/radiator-engineering/eventlog/blob/main/docs/reactors/action.md): `eventlog-reactors action commit` and `action docs`.
-- [Reactor setup](https://github.com/radiator-engineering/eventlog/blob/main/docs/reactors/setup.md): the policy file, the Drove helper, and `upgrade`.
-- [Reactor lock liveness](https://github.com/radiator-engineering/eventlog/blob/main/docs/reactors/reactor-lock-liveness.md): how the runtime detects and reclaims a stale lock.
+- [React command](https://github.com/radiator-engineering/eventlog-reactors/blob/main/docs/react-command.md): `eventlog-reactors react` and `react test`.
+- [Action](https://github.com/radiator-engineering/eventlog-reactors/blob/main/docs/action.md): `eventlog-reactors action commit` and `action docs`.
+- [Reactor setup](https://github.com/radiator-engineering/eventlog-reactors/blob/main/docs/setup.md): the policy file, the Drove helper, and `upgrade`.
+- [Reactor lock liveness](https://github.com/radiator-engineering/eventlog-reactors/blob/main/docs/reactor-lock-liveness.md): how the runtime detects and reclaims a stale lock.
 - [Lifecycle](https://github.com/radiator-engineering/eventlog/blob/main/docs/reference/lifecycle.md): `eventlog lifecycle start` and `stop`.
 - [Run a log-driven repo](https://github.com/radiator-engineering/eventlog/blob/main/docs/how-to/run-a-log-driven-repo.md#6-optional-add-reactors): the how-to, with reactors as its last section.
 - [Command list](https://github.com/radiator-engineering/eventlog/blob/main/docs/reference/eventlog-cli-surface.md#reactor-commands-eventlog-reactors): every `eventlog` and `eventlog-reactors` command.

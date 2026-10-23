@@ -1,7 +1,7 @@
 # Why the reactor lock checks more than a pid
 
 The log's own writer lock (`src/log/lock.rs`, see
-[Why a reclaimed lock is renamed aside before removal](../explanation/lock-reclaim.md))
+[Why a reclaimed lock is renamed aside before removal](https://github.com/radiator-engineering/eventlog/blob/main/docs/explanation/lock-reclaim.md))
 stores just a pid and treats any process with that pid as the live holder.
 That is enough for a lock held for the length of one append. The reactor
 lock in `reactors/src/react/lock.rs` (reference) is
@@ -68,12 +68,12 @@ that stays held a little longer than necessary costs a caller a wait; a
 lock reclaimed while its holder is still writing breaks the one guarantee
 the lock exists to provide, that only one reactor acts on the log at a
 time. The same reasoning governs the plain pid lock's `pid_alive`,
-documented in [Why "dead" errs toward "alive"](../explanation/lock-reclaim.md#why-dead-errs-toward-alive).
+documented in [Why "dead" errs toward "alive"](https://github.com/radiator-engineering/eventlog/blob/main/docs/explanation/lock-reclaim.md#why-dead-errs-toward-alive).
 
 ## Why reclaim re-checks the token after the rename, not just before
 
 `reclaim` (`reactors/src/react/lock.rs`) reads the token twice: once before the
-rename, the same pre-check [the log lock's reclaim](../explanation/lock-reclaim.md)
+rename, the same pre-check [the log lock's reclaim](https://github.com/radiator-engineering/eventlog/blob/main/docs/explanation/lock-reclaim.md)
 relies on, and once more on the renamed path, before removing it.
 
 The pre-rename check alone is not enough here. Renaming `dir` to `stale` is
@@ -110,6 +110,6 @@ rename race.
 ## See also
 
 - Reactor lock — `Token` and `ReactorLock` reference.
-- [Why a reclaimed lock is renamed aside before removal](../explanation/lock-reclaim.md) — the rename-then-remove technique both locks share.
+- [Why a reclaimed lock is renamed aside before removal](https://github.com/radiator-engineering/eventlog/blob/main/docs/explanation/lock-reclaim.md) — the rename-then-remove technique both locks share.
 - Reactor loop — `Reactor::run`, which takes this lock before polling.
-- [Reactors](../../reactors/README.md) — `eventlog-reactors doctor` reports each reactor lock as live or stale.
+- [Reactors](../README.md) — `eventlog-reactors doctor` reports each reactor lock as live or stale.

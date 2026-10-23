@@ -7,7 +7,7 @@ Status: implemented. `reactors/src/setup.rs` holds `setup_changes` and
 documentation roots) and a Drove helper that starts the two reactors.
 
 Up to eventlog 0.5, `eventlog setup` wrote these files. It no longer does:
-`eventlog setup` only sets up the log (see [Setup](../reference/setup.md)).
+`eventlog setup` only sets up the log (see [Setup](https://github.com/radiator-engineering/eventlog/blob/main/docs/reference/setup.md)).
 
 ```sh
 eventlog-reactors setup preview
@@ -101,7 +101,7 @@ main = workspace("main", panes = eventlog_reactors())
 Each pane has:
 
 - an `on_start` hook: `<eventlog> lifecycle start <identity> --role reactor
-  --model <model> --paths <paths>` (see [Lifecycle](../reference/lifecycle.md));
+  --model <model> --paths <paths>` (see [Lifecycle](https://github.com/radiator-engineering/eventlog/blob/main/docs/reference/lifecycle.md));
 - an `on_stop` hook: `<eventlog> lifecycle stop <identity>`;
 - a `serve` command: `<reactors> react ... -- <reactors> action commit` or
   `... action docs` (see [React command](react-command.md) and
@@ -135,7 +135,7 @@ cargo test -p eventlog-reactors --test setup setup_helper_renders_with_drove -- 
 
 ## See also
 
-- [Reactors](../../reactors/README.md) — what reactors are and how to opt in.
-- [Lifecycle](../reference/lifecycle.md) — the `eventlog lifecycle start`/`stop` commands the generated Drove hooks call.
+- [Reactors](../README.md) — what reactors are and how to opt in.
+- [Lifecycle](https://github.com/radiator-engineering/eventlog/blob/main/docs/reference/lifecycle.md) — the `eventlog lifecycle start`/`stop` commands the generated Drove hooks call.
 - [Action](action.md) — the `eventlog-reactors action commit`/`docs` commands the generated reactors run.
-- [Setup](../reference/setup.md) — `eventlog setup`, the log setup that `eventlog-reactors setup apply` runs first.
+- [Setup](https://github.com/radiator-engineering/eventlog/blob/main/docs/reference/setup.md) — `eventlog setup`, the log setup that `eventlog-reactors setup apply` runs first.

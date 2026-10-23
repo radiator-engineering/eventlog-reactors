@@ -136,7 +136,7 @@ cargo test
 ## See also
 
 - [Reactor setup](setup.md) — the `.context/eventlog-setup.toml` `[commit]` and `[docs]` tables `action` reads.
-- [Lifecycle](../reference/lifecycle.md) — spawning and claiming the agent that runs an action.
+- [Lifecycle](https://github.com/radiator-engineering/eventlog/blob/main/docs/reference/lifecycle.md) — spawning and claiming the agent that runs an action.
 - [React command](react-command.md) — `eventlog-reactors react`, which invokes an action as its command.
-- [Reactors](../../reactors/README.md) — what reactors are and how to opt in.
-- [`eventlog` command list](../reference/eventlog-cli-surface.md)
+- [Reactors](../README.md) — what reactors are and how to opt in.
+- [`eventlog` command list](https://github.com/radiator-engineering/eventlog/blob/main/docs/reference/eventlog-cli-surface.md)
